@@ -37,6 +37,11 @@ class News
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="news")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -92,6 +97,18 @@ class News
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
