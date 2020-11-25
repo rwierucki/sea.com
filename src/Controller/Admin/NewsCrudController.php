@@ -24,7 +24,8 @@ class NewsCrudController extends AbstractCrudController
         return [
             TextField::new('title'),
             TextEditorField::new('content'),
-            AssociationField::new('category')
+            AssociationField::new('category'),
+            AssociationField::new('user')->hideOnForm(),
             // DateTimeField::new('createdAt')->renderAsText()->get,
         ];
     }
