@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
 use App\Entity\News;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -17,10 +18,7 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        // return parent::index();
-        // redirect to some CRUD controller
         $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
-
         return $this->redirect($routeBuilder->setController(NewsCrudController::class)->generateUrl());
     }
 
@@ -33,8 +31,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('News', 'fa fa-newspaper-o', News::class);
+        yield MenuItem::linkToCrud('Category', 'fa fa-hashtag', Category::class);
         // yield MenuItem::linkToCrud('The Label', 'icon class', EntityClass::class);
-
         // yield MenuItem::linkToCrud('Blog Posts', null, BlogPost::class)
         //     ->setPermission('ROLE_MOD'),
     }
