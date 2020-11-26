@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\NewsRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass=NewsRepository::class)
+ * @Vich\Uploadable
  */
 class News
 {
@@ -47,9 +51,38 @@ class News
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $thumbnail;
+
+    /**
+     * @Vich\UploadableField(mapping = "thumbnail", fileNameProperty = "thumbnail")
+     */
+    private $thumbnailFile;
+
+    /**
+     * @ORM\Column(type="string", length=255,)
+     * @var string
+     */
+    private $image;
+
+    /**
+     * @Vich\UploadableField(mapping="news_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;    
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->status = 1;
     }
 
@@ -128,5 +161,82 @@ class News
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * Get the value of thumbnail
+     */ 
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * Set the value of thumbnail
+     */ 
+    public function setThumbnail($thumbnail): void
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    /**
+     * Get the value of thumbnailFile
+     */ 
+    public function getThumbnailFile()
+    {
+        return $this->thumbnailFile;
+    }
+
+    /**
+     * Set the value of thumbnailFile
+     *
+     */ 
+    public function setThumbnailFile($thumbnailFile): void
+    {
+        $this->thumbnailFile = $thumbnailFile;
+
+        if ($thumbnailFile) {
+            $this->updatedAt = new \DateTime();
+        }
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+        if ($image) {
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage($image)
+    {
+        // dd('/images/thumbnails/'.$image);
+        $this->image = $image;
+        // $this->image = '/images/thumbnails/'.$image;
+    }
+
+    public function getImage()
+    {
+        // TODO: inny get dla różnych adresów
+        // $entity = 
+
+        return $this->image;
     }
 }

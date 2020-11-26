@@ -36,5 +36,7 @@ class DashboardController extends AbstractDashboardController
         // yield MenuItem::linkToCrud('The Label', 'icon class', EntityClass::class);
         // yield MenuItem::linkToCrud('Blog Posts', null, BlogPost::class)
         //     ->setPermission('ROLE_MOD'),
+        yield MenuItem::section();
+        yield MenuItem::linkToLogout('Logout', 'fa fa-sign-out');
     }
 }
